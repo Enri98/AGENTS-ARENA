@@ -28,11 +28,11 @@ async def agent_player(agent_id: str):
                 options = game_event.payload["options"]
 
                 # Use the generative model to answer the question
-                model = genai.GenerativeModel('gemini-pro')
-                prompt = f"Question: {question}
+                model = genai.GenerativeModel(os.environ.get("GEMINI_MODEL", "gemini-pro"))
+                prompt = f"""Question: {question}
 Options: {options}
 
-Please choose the best option (A, B, C, or D) and provide a brief thought process."
+Please choose the best option (A, B, C, or D) and provide a brief thought process."""
                 response = await model.generate_content_async(prompt)
 
                 # Extract the answer and thought

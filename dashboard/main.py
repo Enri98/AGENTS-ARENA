@@ -28,25 +28,24 @@ def display_event(event: GameEvent):
         
         table.add_row(
             "STATE_UPDATE",
-            f"Question: {question}
+            f"""Question: {question}
 Scores: {score_str}
-Last Action: {last_action}"
+Last Action: {last_action}"""
         )
     elif event.event_type == "LOG":
         table.add_row("LOG", event.payload.get("message", ""))
     elif event.event_type == "QUESTION":
         question = event.payload.get("question", "")
         options = event.payload.get("options", {})
-        options_str = "
-".join([f"{key}: {value}" for key, value in options.items()])
-        table.add_row("QUESTION", f"{question}
-{options_str}")
+        options_str = "\n".join([f"{key}: {value}" for key, value in options.items()])
+        table.add_row("QUESTION", f"""{question}
+{options_str}""")
     elif event.event_type == "RESULT":
         winner = event.payload.get("winner")
         scores = event.payload.get("scores", {})
         score_str = ", ".join([f"{agent}: {score}" for agent, score in scores.items()])
-        table.add_row("RESULT", f"Winner: {winner}
-Scores: {score_str}")
+        table.add_row("RESULT", f"""Winner: {winner}
+Scores: {score_str}""")
     else:
         table.add_row(event.event_type, json.dumps(event.payload, indent=2))
         
